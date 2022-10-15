@@ -3,6 +3,7 @@ import './App.css';
 import { UserButton } from "./UserButton";
 import { PostList } from "./PostList";
 import Button from '@mui/material/Button';
+import {PhotosList} from "./PhotosList";
 
 const baseUrl = "https://jsonplaceholder.typicode.com";
 const usersUrl = `${baseUrl}/users`;
@@ -11,7 +12,7 @@ export function CommentsDashboard() {
   const [users, setUsers] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState();
   const [chosenButton, setChosenButton] = useState();
-  const [displayPostsOrPhotos, setDisplayPostsOrPhotos] = useState(true)
+  const [displayPostsOrPhotos, setDisplayPostsOrPhotos] = useState(false)
 
   useEffect(() => {
     fetch(usersUrl)
@@ -23,8 +24,8 @@ export function CommentsDashboard() {
 
   return (
       <main>
-          <Button variant="outlined" onClick={() => setDisplayPostsOrPhotos(true)} >Display Posts</Button>
-          <Button variant="outlined" onClick={() => setDisplayPostsOrPhotos(false)} >Display Photos</Button>
+          <Button variant="contained" onClick={() => setDisplayPostsOrPhotos(true)} >Display Posts</Button>
+          <Button variant="contained" onClick={() => setDisplayPostsOrPhotos(false)} >Display Photos</Button>
         <div>
           {users
               ? users.map((user) => (
@@ -32,7 +33,8 @@ export function CommentsDashboard() {
               ))
               : "Loading..."}
         </div>
-          <PostList userId={selectedUserId} />
+          {displayPostsOrPhotos && <PostList userId={selectedUserId} />}
+          {!displayPostsOrPhotos && <PhotosList userId={selectedUserId} />}
       </main>
   );
 }

@@ -32,6 +32,7 @@ export function PostList({ userId }) {
             .then((postsArray) => setPosts(postsArray));
     }, [userId]);
 
+    console.log(posts)
     return (
             <List
                 sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}
