@@ -17,29 +17,36 @@ function uuidv4() {
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
 }
-
 export function PostList({ userId }) {
     const [posts, setPosts] = useState(null);
     const [openPostsCollapse, setOpenPostsCollapse] = React.useState(true);
+    const [postsCache, setPostsCache] = useState({})
 
-    const handleClick = () => {
+    const handleCollapsePostsList = () => {
         setOpenPostsCollapse(!openPostsCollapse);
     };
-
     useEffect(() => {
-        fetch(`${postsUrl}?userId=${userId}`)
-            .then((response) => response.json())
-            .then((postsArray) => setPosts(postsArray));
-    }, [userId]);
+        if(userId in postsCache) {
+            setPosts(postsCache[userId])
+            return;
+        }
+        async function fetchPosts() {
+            const response = await fetch(`${postsUrl}?userId=${userId}`);
+            const postsArray = await response.json();
+            setPosts(postsArray);
+            setPostsCache({...postsCache, [userId]: postsArray });
+        }
+        fetchPosts()
+            .catch(console.error);
+        }, [userId]);
 
-    console.log(posts)
     return (
             <List
-                sx={{width: '100%', maxWidth: 1000, bgcolor: 'background.paper'}}
+                sx={{width: '100%', maxWidth: 1300, bgcolor: 'background.paper'}}
                 component="nav"
                 aria-labelledby="nested-list-subheader"
             >
-                <ListItemButton onClick={handleClick}>
+                <ListItemButton onClick={handleCollapsePostsList}>
                     <ListItemIcon>
                         <ArticleIcon/>
                     </ListItemIcon>
