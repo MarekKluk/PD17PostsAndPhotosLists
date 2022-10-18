@@ -17,7 +17,7 @@ function uuidv4() {
 export function CommentsDashboard() {
   const [users, setUsers] = useState(null);
   const [selectedUserId, setSelectedUserId] = useState();
-  const [displayPostsOrPhotos, setDisplayPostsOrPhotos] = useState(false)
+  const [displayPostsOrPhotos, setDisplayPostsOrPhotos] = useState(false);
 
   useEffect(() => {
     fetch(usersUrl)

@@ -20,14 +20,14 @@ function uuidv4() {
 export function PostList({ userId }) {
     const [posts, setPosts] = useState(null);
     const [openPostsCollapse, setOpenPostsCollapse] = React.useState(true);
-    const [postsCache, setPostsCache] = useState({})
+    const [postsCache, setPostsCache] = useState({});
 
     const handleCollapsePostsList = () => {
         setOpenPostsCollapse(!openPostsCollapse);
     };
     useEffect(() => {
         if(userId in postsCache) {
-            setPosts(postsCache[userId])
+            setPosts(postsCache[userId]);
             return;
         }
         async function fetchPosts() {
